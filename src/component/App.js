@@ -3,8 +3,8 @@ import axios from "axios";
 import SearchBar from "./SearchBar";
 import List from "./List";
 
-import logo from "./images/logo.png";
-import "./App.css";
+import logo from "../images/logo.png";
+import "../styles/App.css";
 
 class App extends Component {
   constructor(props) {
