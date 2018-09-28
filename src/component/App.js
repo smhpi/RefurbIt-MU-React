@@ -18,18 +18,36 @@ class App extends Component {
 
   componentDidMount() {
     axios
-      .get(
-        "https://marketplace.bestbuy.ca/api/offers?api_key=fa4ab3b8-4421-4a9a-9e2d-6c087e7bc9ce&max=100"
-      )
+      .all([
+        axios.get("./links.json"),
+        axios.get(
+          "https://marketplace.bestbuy.ca/api/offers?api_key=fa4ab3b8-4421-4a9a-9e2d-6c087e7bc9ce&max=100"
+        )
+      ])
+      //.then(json => console.log(json[0].data.products, json[1].data.offers))
       .then(json =>
-        json.data.offers.map(offer => ({
+        // const shopifyData = shopify.data.products || [];
+        //  const bestbuyData = bestbuy.data.offers || [];
+        // totProducts => shopifyData.concat(bestbuyData);
+        json[0].data.products.map(list => ({
+          id: list.id,
+          title: list.title,
+          quantity: list.variants[0].inventory_quantity
+        }))
+      )
+
+      .then(newData => this.setState({ products: newData, store: newData }))
+      .catch(error => alert(error));
+    /*
+      .then(json =>
+        json[1].data.offers.map(offer => ({
           id: offer.shop_sku,
           title: offer.product_title,
           quantity: offer.quantity
         }))
       )
       .then(newData => this.setState({ products: newData, store: newData }))
-      .catch(error => alert(error));
+      .catch(error => alert(error)); */
   }
 
   filterProduct(e) {
